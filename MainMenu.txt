@@ -1,0 +1,60 @@
+package com.company;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.*;
+import java.util.Objects;
+import java.util.Scanner;
+
+public class Main_Menu {
+    public static void main(String[] args) throws SQLException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/topshop", "root", "85208520");
+            System.out.println("-------------------------------------");
+            System.out.println("------_WELCOME TO TOP-SHOP-APP_------");
+            System.out.println("-------------LOG-IN PAGE-------------");
+            System.out.println("-------------------------------------");
+
+            Statement stmt = con.createStatement();
+            Scanner input = new Scanner(System.in);
+            System.out.print("Enter Your Username");
+            String username = input.next();
+            if (username.length()<4){
+                System.out.println("Enter proper username");
+            }
+            System.out.print("Enter The Password");
+            String password = input.next();
+            if (password.length()<4){
+                System.out.println("Enter proper password");
+            }
+            System.out.print("CHOOSE FROM THE FOLLOWING OPTIONS \n 1.Admin 2.Customer");
+            String usertype = input.next();
+
+            ResultSet rs = stmt.executeQuery("select user_name,user_password,usertype from topshopuser");
+            //System.out.println("qexe");
+            while (rs.next()) {
+                if (username.equals(rs.getString(1)) && password.equals(rs.getString(2)) &&
+                        usertype.equals(rs.getString(3))) {
+                    System.out.println("------CONGRATS YOU BEEN LOGGED SUCCESSFULLY-------");
+
+                    if (Objects.equals(rs.getString(3), "admin")) {
+                        AdminTopShop adm = new AdminTopShop();
+
+                        break;
+                    }
+                    if (Objects.equals(rs.getString(3), "customer")) {
+                        CustomerTopShop cts=new CustomerTopShop();
+                        break;
+                    } else {
+                        System.out.println("OOPS---Invalid Username Or Password");
+                    }
+                }
+
+            }
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

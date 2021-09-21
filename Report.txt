@@ -1,0 +1,67 @@
+package com.company;
+
+import java.sql.*;
+
+class ReportMax {
+    public ReportMax() throws SQLException{
+    Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/Topshop", "root", "85208520");
+        System.out.println("----CUSTOMERS DATA----");
+    CallableStatement stmt=con2.prepareCall("{call orders}");
+    ResultSet rs1 =stmt.executeQuery("select * from orders");
+        while(rs1.next()) {
+
+        System.out.println("Order details: "+"orderid: "+rs1.getInt(1)+" "+"customername: "+rs1.getString(2)+"  "
+                +"orderedproduct: "+rs1.getString(3)+"  "+"myorders: "+rs1.getInt(4));
+        }
+        Statement stmt1= con2.createStatement();
+        ResultSet rs2 =stmt.executeQuery("select max(myorders) from orders");
+        if(rs2.next()){
+            System.out.println("Order details: "+"max of orders:"+rs2.getInt(1));
+        }
+
+        stmt1.close();
+    }
+    }
+
+
+class ReportMin {
+    public ReportMin() throws SQLException{
+        Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/Topshop", "root", "85208520");
+        System.out.println("----CUSTOMERS DATA----");
+        CallableStatement stmt=con2.prepareCall("{call orders}");
+        ResultSet rs1 =stmt.executeQuery("select * from orders");
+        while(rs1.next()) {
+
+            System.out.println("Order details: "+"orderid: "+rs1.getInt(1)+" "+"customername: "+rs1.getString(2)+"  "
+                    +"orderedproduct: "+rs1.getString(3)+"  "+"myorders: "+rs1.getInt(4));
+        }
+        Statement stmt1= con2.createStatement();
+        ResultSet rs2 =stmt.executeQuery("select min(myorders) from orders");
+        if(rs2.next()){
+            System.out.println("Order details: "+"MIN of orders:"+rs2.getInt(1));
+        }
+
+        stmt1.close();
+    }
+}
+
+class ReportAvg {
+    public ReportAvg() throws SQLException{
+        Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/Topshop", "root", "85208520");
+        System.out.println("----CUSTOMERS DATA----");
+        CallableStatement stmt=con2.prepareCall("{call orders}");
+        ResultSet rs1 =stmt.executeQuery("select * from orders");
+        while(rs1.next()) {
+
+            System.out.println("Order details: "+"orderid: "+rs1.getInt(1)+" "+"customername: "+rs1.getString(2)+"  "
+                    +"orderedproduct: "+rs1.getString(3)+"  "+"myorders: "+rs1.getInt(4));
+        }
+        Statement stmt1= con2.createStatement();
+        ResultSet rs2 =stmt.executeQuery("select avg(myorders) from orders");
+        if(rs2.next()){
+            System.out.println("Order details: "+"avg of orders:"+rs2.getInt(1));
+        }
+
+        stmt1.close();
+    }
+}

@@ -1,0 +1,43 @@
+package com.company;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.*;
+
+class ProductReport {
+	public ProductReport() throws IOException, SQLException {
+		File f1 = new File("C:\\Users\\aravind kumar\\prodrepo.txt");
+		f1.createNewFile();
+		FileWriter fw1=new FileWriter("C:\\Users\\aravind kumar\\prodrepo.txt");
+		Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/Topshop", "root", "85208520");
+		System.out.println("----CUSTOMERS DATA----");
+		CallableStatement stmt=con2.prepareCall("{call orders}");
+		ResultSet rs1 =stmt.executeQuery("select * from orders");
+		Statement stmt1 = con2.createStatement();
+
+		ResultSet rs5 = stmt1.executeQuery("select max(myorders) from orders");
+		rs5.next();
+		System.out.println("-----------------------------------");
+		int max=rs5.getInt(1);
+
+		Statement stmt6 = con2.createStatement();
+
+		ResultSet rs6 = stmt1.executeQuery("select min(myorders)from Orders");
+		rs6.next();
+		int min=rs6.getInt(1);
+
+		Statement stmt7 = con2.createStatement();
+		ResultSet rs7 = stmt7.executeQuery("select avg(myorders)from Orders");
+		rs7.next();
+		int avg=rs7.getInt(1);
+		System.out.println("-----------------------------------");
+
+		fw1.write("TODAY'S TRANSACTIONS : \n Maximum order is : "+max+
+				"\n"+"Minimum order is : "+min+
+				"\n"+"Average of the orders : "+avg+"\n");
+		System.out.println("Data has been written into the file");
+		fw1.close();
+
+	}
+	}

@@ -1,0 +1,114 @@
+package com.company;
+
+import java.sql.*;
+import java.util.Scanner;
+
+public class CustomerTopShop {
+    public CustomerTopShop() throws SQLException {
+        int choice1;
+        Scanner input2 = new Scanner(System.in);
+        //Class.forName("com.mysql.cj.jdbc.Driver");
+
+        Connection con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/Topshop", "root", "85208520");
+        System.out.println("-------------------------------------");
+        System.out.println("-----_WELCOME TO CUSTOMER PAGE_------");
+        System.out.println("-------------------------------------");
+        //do {
+        while (true) {
+            System.out.println("-------------------------------------");
+            System.out.println("Welcome To TOP-SHOP");
+            System.out.println("1.New User");
+            System.out.println("2.Already Registration");
+            System.out.println("3.Forgot Password");
+            System.out.println("4.Myorders Detailes");
+            System.out.println("5.Final amount");
+            System.out.println("0.LOG-OUT");
+            System.out.println("-------------------------------------");
+            System.out.println("Enter your choice");
+            choice1 = input2.nextInt();
+            System.out.println(choice1);
+            switch (choice1) {
+                case 1 -> {
+                    con1.setAutoCommit(false);
+                    PreparedStatement stmt = con1.prepareStatement("insert into customerdata values(?,?,?,?,?,?,?,?)");
+                    System.out.println("enter the customer id");
+                    int customerid = input2.nextInt();
+                    System.out.println("enter the customer name");
+                    String customername = input2.next();
+                    System.out.println("enter the customer address");
+                    String customeraddress = input2.next();
+                    System.out.println("enter the customer phone");
+                    long customerphone = input2.nextLong();
+                    System.out.println("enter the email");
+                    String customeremail = input2.next();
+                    System.out.println("enter the username");
+                    String customerpassword = input2.next();
+                    System.out.println("enter the password");
+                    String username = input2.next();
+                    System.out.println("enter the usertype \n admin \n customer");
+                    String usertype = input2.next();
+                    stmt.setInt(1, customerid);
+                    stmt.setString(2, customername);
+                    stmt.setString(3, customeraddress);
+                    stmt.setLong(4, customerphone);
+                    stmt.setString(5, customeremail);
+                    stmt.setString(6, username);
+                    stmt.setString(7, customerpassword);
+                    stmt.setString(8, usertype);
+                    stmt.executeUpdate();
+                    System.out.println("do you want to insert");
+                    String choice = input2.next();
+                    if (choice.equals("yes")) {
+                        con1.commit();
+                    } else if (choice.equals("no")) {
+                        con1.rollback();
+                    }
+                }
+                case 2 -> {
+                    Statement stmt = con1.createStatement();
+                    Scanner input = new Scanner(System.in);
+                    System.out.print("enter your username");
+                    String username = input.next();
+                    System.out.print("enter the password");
+                    String password = input.next();
+                    ResultSet rs = stmt.executeQuery("select user_name,user_password from topshopuser");
+                    //System.out.println("qexe");
+                    while (rs.next()) {
+                        if (username.equals(rs.getString(1)) && password.equals(rs.getString(2))) {
+                            System.out.println("------CONGRATS YOU BEEN LOGGED SUCCESSFULLY-------");
+                            ProductsTopshop prod = new ProductsTopshop();
+                            System.out.println("---------------------------------");
+
+                        }
+                    }
+                }
+                case 3 -> {
+
+                    PreparedStatement stmt = con1.prepareStatement("select customerpassword from customerdata where customeremail=?");
+                    System.out.println("enter customer email");
+                    String customeremail = input2.next();
+                    stmt.setString(1,customeremail);
+                    ResultSet rs=stmt.executeQuery();
+                    if (rs.next()){
+                        System.out.println("password: "+rs.getString(1));
+                }
+                    else {
+                        System.out.println("password cannot be found");
+                    }
+                    stmt.close();
+                    rs.close();
+                }
+                case 4->{
+                    ReportMax rep=new ReportMax();
+                    ReportMin rep1=new ReportMin();
+                    ReportAvg rep2=new ReportAvg();
+                }
+                case 5->{
+                    Transaction trans=new Transaction();
+                }
+                case 0 -> System.exit(0);
+            }
+        }
+
+    }
+}

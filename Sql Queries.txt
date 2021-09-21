@@ -1,0 +1,92 @@
+create database ShoppingApp;
+
+
+create table topshopuser(
+     user_name varchar(25) not null,
+     user_password varchar(25),
+     user_type varchar(25)
+     );
+     
+	drop table topshopuser;
+    
+     insert into topshopuser values ('aravind','aravind','admin');
+			  insert into topshopuser values ('justin','justin','customer');
+              drop table topshopuser;
+              
+              create table topshopuser(
+     user_name varchar(25) not null,
+     user_password varchar(25),
+     user_type varchar(25)
+     );
+     insert into topshopuser values ('aravind','aravind','admin');
+			  insert into topshopuser values ('justin','justin','customer');
+              
+              create table TopshopProducts(
+              productid int not null primary key,
+     productname varchar(25),
+     productprice int not null
+     );
+      insert into TopshopProducts values (1,'Iphone 12 mini',5000);
+			  insert into TopshopProducts  values (2,'Iphone 12 pro max',6000);
+               insert into TopshopProducts values (3,'LG LED television',4000);
+			  insert into TopshopProducts  values (4,'. Washing machine Samsung',3000);
+              
+              alter table topshopProducts
+              add ProductCategory varchar(25);
+              
+              alter table topshopProducts
+              add Productdescription varchar(100);
+              
+               alter table topshopProducts
+              add Productquality varchar(25);
+              insert into TopshopProducts values (1,'Iphone 12 mini',5000,'phone','top brand on planet','good');
+              insert into TopshopProducts  values (2,'Iphone 12 pro max',6000,'phone','top brand on planet','best');
+               insert into TopshopProducts values (3,'LG LED television',4000,'television','life,s good','nice');
+			  insert into TopshopProducts  values (4,'Washing machine Samsung',3000,'home needs','korean company','best');
+              drop table topshopProducts;
+              
+              create table TopshopProducts(
+              productid int not null primary key,
+     productname varchar(25),
+     productprice int not null,
+     ProductCategory varchar(25),
+     Productdescription varchar(100),
+     Productquality varchar(25)
+     );
+     insert into TopshopProducts values (1,'Iphone 12 mini',5000,'phone','top brand on planet','good');
+              
+              
+              create table topshopuser(
+     user_name varchar(25) not null primary key,
+     user_password varchar(25),
+     user_type varchar(25)
+     );
+     insert into topshopuser values ('aravind','aravind','admin');
+			  insert into topshopuser values ('justin','justin','customer');
+	
+       
+       Create table customerdata(
+       customerid int,
+       customername varchar(25) not null,
+     customeraddress int not null,
+     customerphone varchar(25),
+     customeremail varchar(100),
+     customerusername varchar(25),
+     customerpassword varchar(25),
+     user_type varchar(25),
+     primary key (customerid),constraint fk_user_type foreign key(user_type)references topshopuser (user_type)
+     );
+     
+     drop table customerdata;
+     
+     insert into TopshopProducts values ('justin',354,'256354','justin@gnmail.com','justin','justin');
+     
+     alter table customerdata
+    
+     
+     alter table customerdata
+     add constraint fk_usertype
+     foreign key (user_type) references topshopuser (user_type);
+       
+   drop database shoppingapp;   
+              

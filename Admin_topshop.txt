@@ -1,0 +1,144 @@
+package com.company;
+
+import java.io.IOException;
+import java.sql.*;
+import java.util.Scanner;
+
+public class AdminTopShop {
+    // write your code here
+    public AdminTopShop() throws SQLException, IOException {
+        int choice2;
+
+        Scanner input = new Scanner(System.in);
+        //Class.forName("com.mysql.cj.jdbc.Driver");
+
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Topshop", "root", "85208520");
+        System.out.println("-------------------------------------");
+        System.out.println("------_WELCOME TO ADMIN PAGE_--------");
+        System.out.println("-------------------------------------");
+
+        while (true) {
+            System.out.println("-------------------------------------");
+            System.out.println("Welcome To TOP-SHOP");
+            System.out.println("1.Add Product");
+            System.out.println("2.Update Products Details");
+            System.out.println("3.Delete Product");
+            System.out.println("4.Report");
+            System.out.println("5.view all Product");
+            System.out.println("6.view all the customer details");
+            System.out.println("7.Copy all the transaction details into file");
+            System.out.println("0.LOG-OUT");
+            System.out.println("Enter your choice");
+            System.out.println("-------------------------------------");
+            choice2 = input.nextInt();
+            System.out.println(choice2);
+            System.out.println("-------------------------------------");
+
+            switch (choice2) {
+                case 1 -> {
+                    con.setAutoCommit(false);
+                    PreparedStatement stmt = con.prepareStatement("insert into TopshopProducts values(?,?,?,?,?,?)");
+                    System.out.println("Enter the Product id");
+                    int Productid = input.nextInt();
+                    System.out.println("Enter the Product name");
+                    String Productname = input.next();
+                    System.out.println("Enter the Product Price");
+                    int Productprice = input.nextInt();
+                    System.out.println("Enter the Product category");
+                    String ProductCategory = input.next();
+                    System.out.println("Enter the Product description");
+                    String Productdescription = input.next();
+                    System.out.println("Enter the Product Quality");
+                    String ProductQuality = input.next();
+                    stmt.setInt(1, Productid);
+                    stmt.setString(2, Productname);
+                    stmt.setInt(3, Productprice);
+                    stmt.setString(4, ProductCategory);
+                    stmt.setString(5, Productdescription);
+                    stmt.setString(6, ProductQuality);
+                    stmt.executeUpdate();
+                    System.out.println("do you want to insert");
+                    String choice = input.next();
+                    if (choice.equals("yes")) {
+                        con.commit();
+                        System.out.println("PRODUCT-INSERTED-SUCCESSFULLY");
+                    } else if (choice.equals("no")) {
+                        con.rollback();
+                    }
+
+                }
+                case 2 -> {
+                    //update
+                    con.setAutoCommit(true);
+                    PreparedStatement stmt=con.prepareStatement("select * from topshopproducts");
+                    ResultSet rs2= stmt.executeQuery();
+                    while (rs2.next()) {
+
+                        System.out.println("product details: "+"productid: "+rs2.getInt(1)+" "+"productname: "+rs2.getString(2)+"  "
+                                +"productprice: "+rs2.getInt(3)+"  "+"productcategory: "+rs2.getString(4)+"  "+"product description: "
+                                +rs2.getString(5)+"  "+"productQuality: "+rs2.getString(6));
+                    }
+                    //Statement st=con.createStatement();
+                    PreparedStatement stmt1=con.prepareStatement("update topshopproducts set productprice=? where productid=?");
+                    System.out.println("enter the Product id");
+                    int Productid = input.nextInt();
+                    System.out.println("enter the Product Price");
+                    int Productprice = input.nextInt();
+                    stmt1.setInt(1, Productprice);
+                    stmt1.setInt(2, Productid);
+                    stmt1.executeUpdate();
+                    //st.executeUpdate("update topshopproducts set productprice=1500 where productid=1");
+                    System.out.println("Updated Successfully");
+                    stmt.close();
+                    //con.close();
+                }
+                case 3 -> {
+                    //delete
+                    PreparedStatement stmt=con.prepareStatement("delete from topshopproducts where productid=?");
+                    System.out.println("enter the Product id");
+                    int Productid = input.nextInt();
+                    stmt.setInt(1,Productid);
+                    int i=stmt.executeUpdate();
+                    System.out.println(i+" records deleted");
+
+
+                }
+                case 4 ->{
+                    con.setAutoCommit(false);
+                    PreparedStatement stmt = con.prepareStatement("insert into report values(?,?,?)");
+                    System.out.println("Enter the report id");
+                    int reportid = input.nextInt();
+                    System.out.println("Enter the status product delivery");
+                    String Productdelivery = input.next();
+                    System.out.println("Enter the transaction status");
+                    String transactionstatus = input.next();
+                    stmt.setInt(1, reportid);
+                    stmt.setString(2,Productdelivery );
+                    stmt.setString(3,transactionstatus );
+                    stmt.executeUpdate();
+                    System.out.println("do you want to generate report");
+                    String choice = input.next();
+                    if (choice.equals("yes")) {
+                        con.commit();
+                        System.out.println("REPORT-INSERTED-SUCCESSFULLY");
+                    } else if (choice.equals("no")) {
+                        con.rollback();
+                    }
+                }
+                case 5 -> {
+                    System.out.println("---PRODUCTS AVAILABLE IN OUR STORE---");
+                        ProductsTopshop prod = new ProductsTopshop();
+                        System.out.println("---------------------------------");
+                }
+                case 6 ->{
+                    Customersdata cust=new Customersdata();
+                }
+                case 7 ->{
+                    ProductReport fp=new ProductReport();
+                }
+                case 0 -> System.exit(0);
+            }
+        }
+    }
+}
+

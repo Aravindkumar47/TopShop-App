@@ -1,0 +1,63 @@
+package com.company;
+import java.sql.*;
+import java.util.Scanner;
+
+public class ProductsTopshop {
+
+
+        public ProductsTopshop() throws SQLException {
+            Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/Topshop", "root", "85208520");
+            System.out.println("----PRODUCTS WITH REASONABLE PRICES----");
+            CallableStatement stmt=con2.prepareCall("{call topshopproducts}");
+            ResultSet rs1 =stmt.executeQuery("select * from topshopproducts");
+            while(rs1.next()) {
+
+                System.out.println("product details: "+"productid: "+rs1.getInt(1)+" "+"productname: "+rs1.getString(2)+"  "
+                        +"productprice: "+rs1.getInt(3)+"  "+"productcategory: "+rs1.getString(4)+"  "+"product description: "
+                                +rs1.getString(5)+"  "+"productQuality: "+rs1.getString(6));
+            }
+            stmt.close();
+
+        }
+    }
+
+class Customersdata {
+
+
+    public Customersdata() throws SQLException {
+        Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/Topshop", "root", "85208520");
+        System.out.println("----CUSTOMERS DATA----");
+        CallableStatement stmt=con2.prepareCall("{call customerdata}");
+        ResultSet rs1 =stmt.executeQuery("select * from customerdata");
+        while(rs1.next()) {
+
+            System.out.println("Customer details: "+"customerid: "+rs1.getInt(1)+" "+"customername: "+rs1.getString(2)+"  "
+                    +"customeraddress: "+rs1.getString(3)+"  "+"customerphone: "+rs1.getInt(4)+"  "+"customeremail: "
+                    +rs1.getString(5)+"  "+"customerpassword: "+rs1.getString(6)+"  "+"customerusertype: "+rs1.getString(7));
+        }
+        stmt.close();
+    }
+}
+
+class Transaction{
+    Scanner scan = new Scanner(System.in);
+    public Transaction() throws SQLException{
+        Connection con2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/Topshop", "root", "85208520");
+        System.out.println("----CUSTOMERS DATA----");
+        CallableStatement stmt=con2.prepareCall("{call orders}");
+        ResultSet rs1 =stmt.executeQuery("select * from orders");
+        while (rs1.next()){
+            System.out.println("Order details: "+"orderid: "+rs1.getInt(1)+" "+"customername: "+rs1.getString(2)+"  "
+                    +"orderedproduct: "+rs1.getString(3)+"  "+"myorders: "+rs1.getInt(4));
+        int choice=scan.nextInt();
+        if (choice==1){
+            System.out.println("enter quantity");
+            int quantity=scan.nextInt();
+            System.out.println("price of the products "+rs1.getInt(4));
+            int bill,price=rs1.getInt(4);
+            bill=price*quantity;
+            System.out.println("final amount"+bill);
+        }
+        }
+    }
+}
